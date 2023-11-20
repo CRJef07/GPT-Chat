@@ -1,5 +1,1 @@
-numpy
-pandas
-re
-nltk
-matplotlib
+openai
