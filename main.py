@@ -12,7 +12,7 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 messages = [
-    {"role": "system", "content": "Este chat gpt solo responde pregutas referentes a animales. Para preguntas no "
+    {"role": "system", "content": "Este chat gpt solo responde preguntas referentes a animales. Para preguntas no "
                                   "relacionadas a animales, el bot responde con No entiendo"},
 
     {"role": "user", "content": "¿Qué es un animal?"},
@@ -54,17 +54,25 @@ def my_chatbot(input, history):
     return history, history
 
 
-with gr.Blocks() as demo:
-    gr.Markdown("""<h1><center>Chat sobre Animales</center></h1>""")
+with gr.Blocks() as bot:
+    gr.Markdown("""
+            <div style="background-color: #f0f0f0; padding: 20px;">
+                <h1 style="color: #008000; font-family: Arial; text-align: center;">
+                    Chat sobre Animales
+                </h1>
+            </div>
+        """)
     chatbot = gr.Chatbot()
     state = gr.State()
-    text = gr.Textbox(placeholder="Hola, pregúntame algo animales.")
+    text = gr.Textbox(placeholder="Hola, pregúntame algo animales. -> DALE ENTER PARA ENVIAR PREGUNTA", label="Pregunta -> DALE ENTER PARA ENVIAR PREGUNTA")
+    text.submit(fn=my_chatbot, inputs=[text, state], outputs=[chatbot, state])
+
     submit = gr.Button("ENVIAR RESPUESTA")
     submit.click(my_chatbot, inputs=[text, state], outputs=[chatbot, state])
 
 
 def main():
-    demo.launch(share=True)
+    bot.launch(share=True)
 
 
 if __name__ == '__main__':
