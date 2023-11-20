@@ -31,18 +31,23 @@ messages = [
                                      "desempeñan numerosas funciones en los diversos hábitats de la Tierra."}
 ]
 
+def is_animal_related(input_text):
+    animal_keywords = ["animal", "mamífero", "ave", "reptil", "anfibio", "pez", "invertebrado", "hola"]
+    return any(keyword in input_text.lower() for keyword in animal_keywords)
 
 def generate_response(prompt):
     if prompt:
-        messages.append({"role": "user", "content": prompt})
-        chat = client.chat.completions.create(
-            model="gpt-3.5-turbo", messages=messages
-        )
-        reply = chat.choices[0].message.content
-        messages.append({"role": "assistant", "content": reply})
+        if is_animal_related(prompt):
+            messages.append({"role": "user", "content": prompt})
+            chat = client.chat.completions.create(
+                model="gpt-3.5-turbo", messages=messages
+            )
+            reply = chat.choices[0].message.content
+            messages.append({"role": "assistant", "content": reply})
+        else:
+            reply = "No entiendo. Por favor, hazme preguntas relacionadas con animales."
 
     return reply
-
 
 def my_chatbot(input, history):
     history = history or []
