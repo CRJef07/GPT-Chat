@@ -31,16 +31,18 @@ messages = [
                                      "desempeñan numerosas funciones en los diversos hábitats de la Tierra."}
 ]
 
+
 def is_animal_related(input_text):
     animal_keywords = ["animal", "mamífero", "ave", "reptil", "anfibio", "pez", "invertebrado", "hola"]
     return any(keyword in input_text.lower() for keyword in animal_keywords)
+
 
 def generate_response(prompt):
     if prompt:
         if is_animal_related(prompt):
             messages.append({"role": "user", "content": prompt})
             chat = client.chat.completions.create(
-                model="gpt-3.5-turbo", messages=messages
+                model="gpt-3.5-turbo-1106", messages=messages
             )
             reply = chat.choices[0].message.content
             messages.append({"role": "assistant", "content": reply})
@@ -48,6 +50,7 @@ def generate_response(prompt):
             reply = "No entiendo. Por favor, hazme preguntas relacionadas con animales."
 
     return reply
+
 
 def my_chatbot(input, history):
     history = history or []
@@ -61,13 +64,14 @@ def my_chatbot(input, history):
 
 with gr.Blocks() as bot:
     gr.Markdown("""
-            <div style="background-color: #f0f0f0; padding: 20px;">
+            <div style="background-color: #ffcccb; padding: 20px;">
                 <h1 style="color: #008000; font-family: Arial; text-align: center;">
                     Chat sobre Animales
                 </h1>
             </div>
         """)
     chatbot = gr.Chatbot()
+    chatbot.label = "Chat sobre animales"
     state = gr.State()
     text = gr.Textbox(placeholder="Hola, pregúntame algo animales. -> DALE ENTER PARA ENVIAR PREGUNTA", label="Pregunta -> DALE ENTER PARA ENVIAR PREGUNTA")
     text.submit(fn=my_chatbot, inputs=[text, state], outputs=[chatbot, state])
