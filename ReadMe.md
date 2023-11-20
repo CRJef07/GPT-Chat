@@ -4,6 +4,7 @@
 ### All projects
 #### Windows
 Create an environment variable with the name OPENAI_API_KEY and the value of your API key.
+`System Properties` and `Environment Variables` and `New...` and `OK` and `OK` and `OK`
 #### Current Session
 Set environment variable in the current session:
 ``` bash
